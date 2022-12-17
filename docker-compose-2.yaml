@@ -1,0 +1,41 @@
+version: '3.9'
+services:
+  mongodb-service:
+    image: localhost:5050/mongo:v1.0
+    volumes:
+      - volume1:/data/db
+    container_name: mongodb-service
+    ports:
+      - 27017:27017
+    networks:
+      - Reseau1
+
+  backend:
+    image: localhost:5050/oakhmis/image1:v1.0
+    container_name: backend
+    ports:
+      - 5000:5000
+    networks:
+      - Reseau1
+    depends_on:
+      - mongodb-service
+
+  frontend:
+    image: localhost:5050/oakhmis/image2:v1.0
+    container_name: frontend
+    ports:
+      - 80:80
+    networks:
+      - Reseau1
+    depends_on:
+      - backend
+    # ---------------
+    stdin_open: true
+    tty: true
+
+volumes:
+  volume1:
+
+networks:
+  Reseau1:
+    external: true
