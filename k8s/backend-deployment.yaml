@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: exam
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: elab4d1/backend_image:v2
+          ports:
+            - name: backend-port
+              containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: backend-port
+            timeoutSeconds: 15
+            periodSeconds: 120
+
+          readinessProbe:
+            httpGet:
+              port: backend-port
+              path: /health
+            timeoutSeconds: 15
+            periodSeconds: 13
+
+          startupProbe:
+            tcpSocket:
+              port: backend-port
+            failureThreshold: 10
+            periodSeconds: 10

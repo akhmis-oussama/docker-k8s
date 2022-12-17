@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-configmap
+  namespace: exam
+data:
+  CLOUDL_SERVER: "localhost"
